@@ -18,7 +18,7 @@
 
     <ul class="navbar-nav">
         <li class="nav-item" th:each="menuItem, iterStat : ${menuItems}">
-            <a class="nav-link" th:classappend="${menuItem.active} ? 'active'"
+            <a class="nav-link"
                th:href="@{${menuItem.url}}"
                th:id="'menu-item-' + ${iterStat.index}"
                th:data-name="${menuItem.name}">

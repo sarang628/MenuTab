@@ -1,6 +1,5 @@
 /**
- * @file menuTree.html
- * @see menuTree
+ * @file leftMenu.html
  */
 export function initializeMenu() {
     console.log("initializeMenu")
@@ -16,7 +15,9 @@ export function initializeMenu() {
             const tabTitle = link.getAttribute('data-tab-title');
             const tabContent = link.getAttribute('data-tab-content');
 
-            addTab(tabId, tabTitle, tabContent);
+            //addTab(tabId, tabTitle, tabContent);
+            openOrActivateTab(tabId, tabTitle, tabContent);
+
         });
     });
 }
@@ -40,7 +41,7 @@ function addTab(tabId, tabTitle, tabContent) {
 
     const newTabButton = document.createElement('button');
     newTabButton.className = 'nav-link';
-    newTabButton.id = `${tabId}-tab`;
+    newTabButton.id = `${tabId}`;
     newTabButton.setAttribute('data-bs-toggle', 'tab');
     newTabButton.setAttribute('data-bs-target', `#${tabId}`);
     newTabButton.setAttribute('type', 'button');
@@ -49,6 +50,21 @@ function addTab(tabId, tabTitle, tabContent) {
     newTabButton.setAttribute('aria-selected', 'false');
     newTabButton.textContent = tabTitle;
 
+    // 닫기 버튼
+    const closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.className = 'btn-close ms-2';
+    closeButton.setAttribute('aria-label', 'Close');
+
+    // 닫기 버튼 이벤트 추가
+    closeButton.addEventListener('click', () => {
+        const tabContent = document.querySelector(`#${tabId}`);
+        if (tabContent) tabContent.remove(); // 탭 콘텐츠 삭제
+        newTabButton.remove(); // 탭 버튼 삭제
+    });
+
+    // 탭 버튼에 추가
+    newTabButton.appendChild(closeButton);
     newTab.appendChild(newTabButton);
     tabList.appendChild(newTab);
 
@@ -57,7 +73,7 @@ function addTab(tabId, tabTitle, tabContent) {
     newTabPane.className = 'tab-pane fade';
     newTabPane.id = tabId;
     newTabPane.setAttribute('role', 'tabpanel');
-    newTabPane.setAttribute('aria-labelledby', `${tabId}-tab`);
+    newTabPane.setAttribute('aria-labelledby', `${tabId}`);
 
     const tabHeading = document.createElement('h3');
     tabHeading.textContent = tabTitle;
@@ -72,4 +88,26 @@ function addTab(tabId, tabTitle, tabContent) {
     // 새로 추가된 탭을 활성화
     const tabTrigger = new bootstrap.Tab(newTabButton);
     tabTrigger.show();
+}
+
+/**
+ * 메뉴 클릭 시 탭을 열거나 이미 열려 있는 경우 활성화하는 함수
+ *
+ * @param {string} tabId - 탭의 고유 ID (HTML 요소의 ID로 사용)
+ * @param {string} tabTitle - 탭 제목 (버튼에 표시)
+ * @param {string} tabContent - 탭 콘텐츠 (패널에 표시)
+ */
+function openOrActivateTab(tabId, tabTitle, tabContent) {
+    // 기존 탭 버튼 찾기
+    const existingTabButton = document.getElementById(`${tabId}`);
+
+    if (existingTabButton) {
+        // 이미 열려 있는 경우, 해당 탭을 활성화
+        const tabTrigger = new bootstrap.Tab(existingTabButton);
+        tabTrigger.show(); // Bootstrap API로 탭 활성화
+        return; // 새 탭을 생성하지 않고 종료
+    }
+
+    // 열려 있지 않은 경우 새 탭 생성
+    addTab(tabId, tabTitle, tabContent);
 }

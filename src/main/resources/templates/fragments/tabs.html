@@ -1,19 +1,26 @@
 <div th:fragment="tabContent">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <!-- @type List<Tab> -->
         <li class="nav-item" role="presentation" th:each="tab : ${tabs}">
-            <!-- 탭 버튼 -->
-            <button class="nav-link"
-                    th:classappend="${tab.active} ? 'active'"
-                    th:id="${tab.id + '-tab'}"
-                    th:data-bs-target="${tab.id}"
-                    type="button"
-                    role="tab"
-                    data-bs-toggle="tab"
-                    th:aria-controls="${tab.id}"
-                    th:aria-selected="${tab.active}">
-                <!--탭 버튼명-->
-                <span th:text="${tab.title}"></span>
-            </button>
+            <div class="nav-item" style="display: flex; align-items: center;">
+                <!-- 탭 버튼 -->
+                <button class="nav-link"
+                        th:classappend="${tab.active} ? 'active'"
+                        th:id="${tab.id}"
+                        th:data-bs-target="#${tab.id}"
+                        type="button"
+                        role="tab"
+                        data-bs-toggle="tab"
+                        th:aria-controls="${tab.id}"
+                        th:aria-selected="${tab.active}">
+                    <!-- 탭 버튼명 -->
+                    <span th:text="${tab.title}"></span>
+                </button>
+
+                <!-- 닫기 버튼 -->
+                <button type="button" class="btn-close ms-2" aria-label="Close">
+                </button>
+            </div>
         </li>
     </ul>
     <!--  탭 하단 내용   -->
@@ -23,7 +30,7 @@
              th:each="tab : ${tabs}"
              th:id="${tab.id}"
              role="tabpanel"
-             th:aria-labelledby="${tab.id + '-tab'}">
+             th:aria-labelledby="${tab.id}">
             <!-- 타이틀 -->
             <h3 th:text="${tab.title}">Tab Content Title</h3>
             <!-- 내용 -->

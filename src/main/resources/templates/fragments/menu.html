@@ -1,0 +1,19 @@
+<!-- fragments/menu.html -->
+<!-- @see MenuItem.java -->
+<div th:fragment="menuFragment(menuItems)">
+    <ul class="list-group" th:if="${menuItems != null}">
+        <!-- 메뉴 리스트 개수만큼 loop -->
+        <li class="list-group-item" th:each="menuItem : ${menuItems}">
+            <!-- 메뉴 항목 display -->
+            <a href=""
+               data-bs-toggle="collapse"
+               th:data-tab-id="${menuItem.name}"
+               th:data-tab-title="${menuItem.name}"
+               th:data-tab-content="${menuItem.name}"
+               th:text="${menuItem.name}">
+            </a>
+            <!-- 자식 메뉴가 있는 경우 재귀 호출 -->
+            <div th:replace="this :: menuFragment(${menuItem.children})"></div>
+        </li>
+    </ul>
+</div>

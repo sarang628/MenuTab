@@ -1,10 +1,10 @@
-package com.example.menutab;
+package com.example.menutab.model;
 
 public class Tab {
-    private String id;
-    private String title;
-    private String content;
-    private boolean active;
+    private final String id;
+    private final String title;
+    private final String content;
+    private final boolean active;
 
     public Tab(String id, String title, String content, boolean active) {
         this.id = id;
